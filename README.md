@@ -11,6 +11,7 @@ Library for working with graphs
 - [Search for connectivity components in an undirected graph](#connected-components)
 - [Topological sorting](#topological-sort)
 - [Search for components of strong connectivity in a directed graph](#strongly-connected-components)
+- [Dijkstra's algorithm (finding the shortest distance from one vertex to all the others)](#dijkstra)
 
 ```rust
 use libgraph::{GraphKind, Graph, version};
@@ -267,6 +268,29 @@ fn main(){
     assert_eq!(strongly_connected_components[3], vec![0]);
 }
 ```
+
+#### <a id="dijkstra"/> Dijkstra's algorithm
+Dijkstra's algorithm finds the shortest paths from a given vertex to all other vertices of the graph without edges with negative weight. The complexity of the algorithm is <b>O(E log(V))</b>, where V is the number of vertices of the graph, and E is the number of edges.
+```rust
+use libgraph::{dijkstra, path_iter, Graph, GraphKind};
+
+fn main(){
+    let mut graph = GraphKind::Undirected::<f32>(Graph::new(10));
+    graph.add_edge(1, 2, 7.0).unwrap();
+    graph.add_edge(1, 6, 14.0).unwrap();
+    graph.add_edge(1, 3, 9.0).unwrap();
+    graph.add_edge(6, 3, 2.0).unwrap();
+    graph.add_edge(6, 5, 9.0).unwrap();
+    graph.add_edge(3, 2, 10.0).unwrap();
+    graph.add_edge(3, 4, 11.0).unwrap();
+    graph.add_edge(2, 4, 15.0).unwrap();
+    graph.add_edge(4, 5, 6.0).unwrap();
+    
+    let (parents, distances) = dijkstra(&graph, 1).unwrap();
+    assert_eq!(distances[4].unwrap(), 20.0);
+    assert_eq!(path_iter(4, &parents).collect::<Vec<usize>>(), vec![4, 3, 1]);
+}
+````
 
 ### Cargo.toml
 ```bash
