@@ -3,6 +3,7 @@ pub use algorithms::bfs::{bfs, bfs_visitor, BfsEvent};
 pub use algorithms::dfs::{dfs, dfs_visitor, DfsEvent};
 pub use algorithms::connected_components::connected_components;
 pub use algorithms::topological_sort::topological_sort;
+pub use algorithms::strongly_connected_components::strongly_connected_components;
 
 pub mod error;
 use error::GraphError;

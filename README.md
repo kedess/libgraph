@@ -7,6 +7,7 @@ Library for working with graphs
 - [Depth-first search, dfs with visitor](#dfs-visitor)
 - [Search for connectivity components in an undirected graph](#connected-components)
 - [Topological sorting](#topological-sort)
+- [Search for components of strong connectivity in a directed graph](#strongly-connected-components)
 
 ```rust
 use libgraph::{GraphKind, Graph, version};
@@ -215,6 +216,7 @@ fn main(){
     assert_eq!(components.len(), 2);
 }
 ```
+
 #### <a id="topological-sort"/> Topological sorting
 The task of topological sorting of a graph is as follows: given an oriented graph, you need to find such an order of vertices that all its edges lead from an earlier vertex to a later one. The algorithmic complexity is <b>O(V + E)</b>, where V is the number of vertices and E is the number of edges.
 <b>Note that this sorting only applies to directed and acyclic graphs.</b>
@@ -235,6 +237,33 @@ fn main(){
 }
 ```
 
+#### <a id="strongly-connected-components"/> Search for components of strong connectivity in a directed graph
+Two vertices of a directed graph are strongly connected if there is a path from one to the other and vice versa. In other words, they both lie in some cycle. The complexity of the algorithm is <b>O(V + E)</b>, where V is the number of vertices and E is the number of edges.
+```rust
+use libgraph::{strongly_connected_components, Graph, Empty, GraphKind};
+
+fn main(){
+    let mut graph = GraphKind::Directed::<Empty>(Graph::new(10));
+    graph.add_edge(1, 4, Empty).unwrap();
+    graph.add_edge(4, 7, Empty).unwrap();
+    graph.add_edge(7, 1, Empty).unwrap();
+    graph.add_edge(9, 7, Empty).unwrap();
+    graph.add_edge(6, 9, Empty).unwrap();
+    graph.add_edge(9, 3, Empty).unwrap();
+    graph.add_edge(3, 6, Empty).unwrap();
+    graph.add_edge(8, 6, Empty).unwrap();
+    graph.add_edge(2, 8, Empty).unwrap();
+    graph.add_edge(8, 5, Empty).unwrap();
+    graph.add_edge(5, 2, Empty).unwrap();
+    
+    let strongly_connected_components = strongly_connected_components(&graph).unwrap();
+
+    assert_eq!(strongly_connected_components[0], vec![8, 5, 2]);
+    assert_eq!(strongly_connected_components[1], vec![9, 3, 6]);
+    assert_eq!(strongly_connected_components[2], vec![4, 7, 1]);
+    assert_eq!(strongly_connected_components[3], vec![0]);
+}
+```
 
 ### Cargo.toml
 ```bash
