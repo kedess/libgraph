@@ -1,10 +1,10 @@
 ## libgraph
 Library for working with graphs
 
-- [bfs](#bfs)
-- [bfs visitor](#bfs-visitor)
-- [dfs](#dfs)
-- [dfs visitor](#dfs-visitor)
+- [Breadth-first search, bfs](#bfs)
+- [Breadth-first search, bfs with visitor](#bfs-visitor)
+- [Depth-first search, dfs](#dfs)
+- [Depth-first search, dfs with visitor](#dfs-visitor)
 
 ```rust
 use libgraph::{GraphKind, Graph, version};
@@ -26,7 +26,7 @@ fn main() {
     graph.add_edge(3, 7, 3.0).unwrap();
 }
 ```
-#### <a id="bfs"/> bfs
+#### <a id="bfs"/> Breadth-first search, bfs
 Algorithmic complexity <b>O(V + E)</b>, where V is the number of vertices in the graph and E is the number of edges.
 ```rust
 use libgraph::{bfs, path_iter, Graph, GraphKind};
@@ -46,7 +46,7 @@ fn main(){
 }
 ```
 
-#### <a id="bfs-visitor"/> bfs visitor
+#### <a id="bfs-visitor"/> Breadth-first search, bfs with visitor
 ```rust
 use libgraph::{GraphKind, Graph, bfs_visitor, BfsEvent};
 
@@ -111,7 +111,7 @@ fn main() {
     assert_eq!(vertexes, vec![1, 2, 3, 4, 5, 8, 17]);
 }
 ```
-#### <a id="dfs"/> dfs
+#### <a id="dfs"/> Depth-first search, dfs
 Algorithmic complexity <b>O(V + E)</b>, where V is the number of vertices in the graph and E is the number of edges.
 
 ```rust
@@ -131,7 +131,7 @@ fn main(){
 }
 ```
 
-#### <a id="dfs-visitor"/> dfs visitor
+#### <a id="dfs-visitor"/> Depth-first search, dfs with visitor
 
 ```rust
 use libgraph::{dfs, dfs_visitor, DfsEvent, path_iter, Graph, GraphKind};
