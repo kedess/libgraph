@@ -5,6 +5,7 @@ Library for working with graphs
 - [Breadth-first search, bfs with visitor](#bfs-visitor)
 - [Depth-first search, dfs](#dfs)
 - [Depth-first search, dfs with visitor](#dfs-visitor)
+- [Search for connectivity components in an undirected graph](#connected-components)
 
 ```rust
 use libgraph::{GraphKind, Graph, version};
@@ -190,6 +191,27 @@ fn main(){
         false
     }).unwrap();
     assert_eq!(vertexes, vec![1, 2, 3, 5]);
+}
+```
+#### <a id="connected-components"/> Search for connectivity components in an undirected graph
+The connectivity component of an undirected graph is a subset of vertices reachable from some given vertex.
+Due to disorientation, all vertices of a connected component are reachable from each other.
+Algorithmic complexity <b>O(V + E)</b>, where V is the number of vertices in the graph and E is the number of edges.
+```rust
+use libgraph::{connected_components, Empty, Graph, GraphKind};
+
+fn test_connected_components(){
+    let mut graph = GraphKind::Undirected::<Empty>(Graph::new(6));
+    graph.add_edge(0, 2, Empty).unwrap();
+    graph.add_edge(2, 5, Empty).unwrap();
+    graph.add_edge(2, 3, Empty).unwrap();
+    graph.add_edge(5, 3, Empty).unwrap();
+    graph.add_edge(1, 4, Empty).unwrap();
+
+    let components = connected_components(&graph).unwrap();
+    assert_eq!(components[0], [0, 2, 5, 3]);
+    assert_eq!(components[1], [1, 4]);
+    assert_eq!(components.len(), 2);
 }
 ```
 
