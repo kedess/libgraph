@@ -1,4 +1,7 @@
 ## libgraph
+[![Build and Test](https://github.com/mingendo/libgraph/actions/workflows/rust.yml/badge.svg)](https://github.com/mingendo/libgraph/actions/workflows/rust.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
 Library for working with graphs
 
 - [Breadth-first search, bfs](#bfs)
