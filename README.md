@@ -6,6 +6,7 @@ Library for working with graphs
 - [Depth-first search, dfs](#dfs)
 - [Depth-first search, dfs with visitor](#dfs-visitor)
 - [Search for connectivity components in an undirected graph](#connected-components)
+- [Topological sorting](#topological-sort)
 
 ```rust
 use libgraph::{GraphKind, Graph, version};
@@ -200,7 +201,7 @@ Algorithmic complexity <b>O(V + E)</b>, where V is the number of vertices in the
 ```rust
 use libgraph::{connected_components, Empty, Graph, GraphKind};
 
-fn test_connected_components(){
+fn main(){
     let mut graph = GraphKind::Undirected::<Empty>(Graph::new(6));
     graph.add_edge(0, 2, Empty).unwrap();
     graph.add_edge(2, 5, Empty).unwrap();
@@ -212,6 +213,25 @@ fn test_connected_components(){
     assert_eq!(components[0], [0, 2, 5, 3]);
     assert_eq!(components[1], [1, 4]);
     assert_eq!(components.len(), 2);
+}
+```
+#### <a id="topological-sort"/> Topological sorting
+The task of topological sorting of a graph is as follows: given an oriented graph, you need to find such an order of vertices that all its edges lead from an earlier vertex to a later one. The algorithmic complexity is <b>O(V + E)</b>, where V is the number of vertices and E is the number of edges.
+<b>Note that this sorting only applies to directed and acyclic graphs.</b>
+```rust
+use libgraph::{topological_sort, Graph, Empty, GraphKind};
+
+fn main(){
+    let mut graph = GraphKind::Directed::<f32>(Graph::new(10));
+    graph.add_edge(0, 1, 0.0).unwrap();
+    graph.add_edge(1, 2, 0.0).unwrap();
+    graph.add_edge(1, 3, 0.0).unwrap();
+    graph.add_edge(1, 5, 0.0).unwrap();
+    graph.add_edge(1, 4, 0.0).unwrap();
+    graph.add_edge(2, 4, 0.0).unwrap();
+    graph.add_edge(3, 4, 0.0).unwrap();
+    graph.add_edge(3, 5, 0.0).unwrap();
+    assert_eq!(topological_sort(&graph).unwrap(), vec![9, 8, 7, 6, 0, 1, 3, 5, 2, 4]);
 }
 ```
 
