@@ -1,8 +1,10 @@
 ## libgraph
 Library for working with graphs
 
-- [BFS](#bfs)
-- [BFS visitor](#bfs-visitor)
+- [bfs](#bfs)
+- [bfs visitor](#bfs-visitor)
+- [dfs](#dfs)
+- [dfs visitor](#dfs-visitor)
 
 ```rust
 use libgraph::{GraphKind, Graph, version};
@@ -24,7 +26,7 @@ fn main() {
     graph.add_edge(3, 7, 3.0).unwrap();
 }
 ```
-#### <a id="bfs"/> BFS
+#### <a id="bfs"/> bfs
 Algorithmic complexity <b>O(V + E)</b>, where V is the number of vertices in the graph and E is the number of edges.
 ```rust
 use libgraph::{bfs, path_iter, Graph, GraphKind};
@@ -44,7 +46,7 @@ fn main(){
 }
 ```
 
-#### <a id="bfs-visitor"/> BFS visitor
+#### <a id="bfs-visitor"/> bfs visitor
 ```rust
 use libgraph::{GraphKind, Graph, bfs_visitor, BfsEvent};
 
@@ -109,6 +111,88 @@ fn main() {
     assert_eq!(vertexes, vec![1, 2, 3, 4, 5, 8, 17]);
 }
 ```
+#### <a id="dfs"/> dfs
+Algorithmic complexity <b>O(V + E)</b>, where V is the number of vertices in the graph and E is the number of edges.
+
+```rust
+use libgraph::{dfs, path_iter, Graph, GraphKind};
+
+fn main(){
+    let mut graph = GraphKind::Directed(Graph::new(10));
+    graph.add_edge(1, 2, 0.0).unwrap();
+    graph.add_edge(2, 3, 0.0).unwrap();
+    graph.add_edge(3, 5, 0.0).unwrap();
+
+    let parents = dfs(&graph, 1).unwrap();
+    assert_eq!(path_iter(5, &parents).collect::<Vec<usize>>(), vec![5, 3, 2, 1]);
+
+    let parents = dfs(&graph, 1).unwrap();
+    assert_eq!(path_iter(77, &parents).collect::<Vec<usize>>(), vec![]);
+}
+```
+
+#### <a id="dfs-visitor"/> dfs visitor
+
+```rust
+use libgraph::{dfs, dfs_visitor, DfsEvent, path_iter, Graph, GraphKind};
+
+fn main(){
+    let mut graph = GraphKind::Directed(Graph::new(10));
+
+    graph.add_edge(1, 2, 0.0).unwrap();
+    graph.add_edge(2, 3, 0.0).unwrap();
+    graph.add_edge(3, 5, 0.0).unwrap();
+
+    let mut vertexes = vec![];
+
+    let _ = dfs_visitor(&graph, 1, |event|{
+        match event {
+            // The event is called when the algorithm first encounters a vertex in the traversal
+            // Событие вызывается, когда алгоритм впервые встречает вершину в обходе
+            DfsEvent::DiscoverVertex(vertex, _time_in) => {
+                vertexes.push(vertex);
+            }
+            // The event is called before you start exploring the vertex.
+            // Событие вызывается до того, как вы начнете исследовать вершину.
+            DfsEvent::ExamineVertex(_vertex) => {
+
+            }
+            // The event is triggered when the edge under investigation is an edge of the tree after traversal.
+            // Событие срабатывает, когда исследуемое ребро является ребром дерева после обхода.
+            DfsEvent::IsTreeEdge(_from, _to) => {
+
+            }
+            // The event is triggered when we return to the ancestor from which we explored the vertex.
+            // Событие срабатывает, когда мы возвращаемся к предку, из которого мы исследовали вершину.
+            DfsEvent::ReturnParent(_from,_) => {
+
+            }
+            // The event is triggered when we try to follow the reverse edge.
+            // Событие срабатывает, когда мы пытаемся пойти по обратному ребру.
+            DfsEvent::BackEdge(_from, _to) => {
+
+            }
+            // The event is triggered when we try to walk along a straight or transverse edge (only for a directed graph).
+            // Событие срабатывает, когда мы пытаемся пройти по прямому или поперечному ребру (только для ориентированного графа).
+            DfsEvent::ForwardOrCrossEdge(_, _to) => {
+
+            }
+            // The event is called after examining all outgoing edges and all neighboring vertices.
+            // Событие вызывается после изучения всех исходящих ребер и всех соседних вершин.
+            DfsEvent::FinishVertex(_vertex, _time_out) => {
+            }
+            _ =>{
+
+            }
+        }
+        // If true is returned, the traversal will be completed after calling this callback
+        // Если возвращается true, то обход будет завершен после вызова этого обратного вызова
+        false
+    }).unwrap();
+    assert_eq!(vertexes, vec![1, 2, 3, 5]);
+}
+```
+
 
 ### Cargo.toml
 ```bash

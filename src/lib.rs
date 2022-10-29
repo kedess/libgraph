@@ -1,5 +1,7 @@
 mod algorithms;
 pub use algorithms::bfs::{bfs, bfs_visitor, BfsEvent};
+pub use algorithms::dfs::{dfs, dfs_visitor, DfsEvent};
+
 pub mod error;
 use error::GraphError;
 
