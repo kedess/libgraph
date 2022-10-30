@@ -15,6 +15,7 @@ Library for working with graphs
 - [Construction of a minimal spanning tree (Kruskal's algorithm)](#kruskal)
 - [Search for the depth (distance) from a given vertex to all others](#depths_vertices)
 - [Finding the least common ancestor (LCA)](#lca)
+- [Floid 's Algorithm](#floid)
 
 ```rust
 use libgraph::{GraphKind, Graph, version};
@@ -376,6 +377,27 @@ fn main(){
     assert_eq!(2, lca.query(4, 2).unwrap());
     assert_eq!(1, lca.query(2, 8).unwrap());
     assert_eq!(3, lca.query(6, 8).unwrap());
+}
+```
+
+#### <a id="floid"/> Floid 's Algorithm
+An algorithm for finding the length of shortest paths between all pairs of vertices in a weighted directed graph. It works correctly if there are no negative value cycles in the graph, and if there is such a cycle, it reports its presence.
+The complexity of the algorithm is <b>O(V^3)</b>, where V is the number of vertices of the graph.
+
+```rust
+use libgraph::{GraphKind, Graph, floid};
+
+fn main(){
+    let mut graph = GraphKind::Directed::<i32>(Graph::new(5));
+    graph.add_edge(1, 2, 1).unwrap();
+    graph.add_edge(1, 3, 6).unwrap();
+    graph.add_edge(2, 3, 4).unwrap();
+    graph.add_edge(2, 4, 1).unwrap();
+    graph.add_edge(4, 3, 1).unwrap();
+
+    let dist = floid(&graph).unwrap();
+    assert_eq!(dist.get_dist(1, 2).unwrap(), 1);
+    assert_eq!(dist.get_dist(1, 4).unwrap(), 2);
 }
 ```
 

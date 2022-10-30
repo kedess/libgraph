@@ -8,6 +8,7 @@ pub use algorithms::dijkstra::dijkstra;
 pub use algorithms::kruskal::{kruskal, SpanningTreeEdge};
 pub use algorithms::depths_vertices::depths_vertices;
 pub use algorithms::lca::Lca;
+pub use algorithms::floid::floid;
 
 pub mod error;
 use error::GraphError;
