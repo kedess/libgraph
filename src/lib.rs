@@ -6,6 +6,7 @@ pub use algorithms::topological_sort::topological_sort;
 pub use algorithms::strongly_connected_components::strongly_connected_components;
 pub use algorithms::dijkstra::dijkstra;
 pub use algorithms::kruskal::{kruskal, SpanningTreeEdge};
+pub use algorithms::depths_vertices::depths_vertices;
 
 pub mod error;
 use error::GraphError;

@@ -13,6 +13,7 @@ Library for working with graphs
 - [Search for components of strong connectivity in a directed graph](#strongly-connected-components)
 - [Dijkstra's algorithm (finding the shortest distance from one vertex to all the others)](#dijkstra)
 - [Construction of a minimal spanning tree (Kruskal's algorithm)](#kruskal)
+- [Search for the depth (distance) from a given vertex to all others](#depths_vertices)
 
 ```rust
 use libgraph::{GraphKind, Graph, version};
@@ -320,6 +321,33 @@ fn main(){
         .map(|edge| (edge.from, edge.to))
         .collect::<Vec<(usize, usize)>>();
     assert_eq!(res, vec![(0, 1), (3, 5), (4, 1), (4, 6), (1, 2), (5, 2), (7, 5)]);
+}
+```
+
+#### <a id="depths_vertices"/> Search for the depth (distance) from a given vertex to all others
+The complexity of the algorithm is <b>O(V + E)</b>, where V is the number of vertices and E is the number of edges. This algorithm is applicable only to an undirected graph.
+
+```rust
+use libgraph::{depths_vertices, Graph, GraphKind};
+
+fn main(){
+    let mut graph = GraphKind::Undirected(Graph::new(13));
+    graph.add_edge(1, 4, 0).unwrap();
+    graph.add_edge(1, 2, 0).unwrap();
+    graph.add_edge(4, 11, 0).unwrap();
+    graph.add_edge(4, 12, 0).unwrap();
+    graph.add_edge(12, 3, 0).unwrap();
+    graph.add_edge(2, 5, 0).unwrap();
+    graph.add_edge(2, 6, 0).unwrap();
+    graph.add_edge(5, 9, 0).unwrap();
+    graph.add_edge(5, 10, 0).unwrap();
+    graph.add_edge(6, 7, 0).unwrap();
+    graph.add_edge(7, 8, 0).unwrap();
+
+    let depths = depths_vertices(&graph, 1).unwrap();
+    assert_eq!(depths[3], Some(3));
+    assert_eq!(depths[8], Some(4));
+    assert_eq!(depths[11], Some(2));
 }
 ```
 
