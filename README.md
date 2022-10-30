@@ -12,6 +12,7 @@ Library for working with graphs
 - [Topological sorting](#topological-sort)
 - [Search for components of strong connectivity in a directed graph](#strongly-connected-components)
 - [Dijkstra's algorithm (finding the shortest distance from one vertex to all the others)](#dijkstra)
+- [Construction of a minimal spanning tree (Kruskal's algorithm)](#kruskal)
 
 ```rust
 use libgraph::{GraphKind, Graph, version};
@@ -290,7 +291,37 @@ fn main(){
     assert_eq!(distances[4].unwrap(), 20.0);
     assert_eq!(path_iter(4, &parents).collect::<Vec<usize>>(), vec![4, 3, 1]);
 }
-````
+```
+
+#### <a id="kruskal"/> Construction of a minimal spanning tree (Kruskal's algorithm)
+Kruskal's algorithm is an efficient algorithm for constructing a minimal spanning tree of a weighted connected undirected graph. The complexity of the algorithm is <b>O(E log(E))</b>, where E is the number of edges in the graph.
+```rust
+use libgraph::{kruskal, Graph, GraphKind, SpanningTreeEdge};
+
+fn main(){
+    let mut graph = GraphKind::Undirected(Graph::new(20));
+    graph.add_edge(0, 1, 3.0).unwrap();
+    graph.add_edge(1, 2, 7.0).unwrap();
+    graph.add_edge(1, 4, 5.0).unwrap();
+    graph.add_edge(2, 3, 8.0).unwrap();
+    graph.add_edge(2, 5, 7.0).unwrap();
+    graph.add_edge(2, 4, 9.0).unwrap();
+    graph.add_edge(3, 5, 5.0).unwrap();
+    graph.add_edge(5, 7, 9.0).unwrap();
+    graph.add_edge(5, 6, 8.0).unwrap();
+    graph.add_edge(5, 4, 15.0).unwrap();
+    graph.add_edge(6, 7, 11.0).unwrap();
+    graph.add_edge(6, 4, 6.0).unwrap();
+    let edges: Vec<SpanningTreeEdge<f64>> = kruskal(&graph).unwrap();
+    let summary_weight: f64 = edges.iter().map(|edge| edge.weight).sum();
+    assert_eq!(42.0, summary_weight);
+    let res = edges
+        .iter()
+        .map(|edge| (edge.from, edge.to))
+        .collect::<Vec<(usize, usize)>>();
+    assert_eq!(res, vec![(0, 1), (3, 5), (4, 1), (4, 6), (1, 2), (5, 2), (7, 5)]);
+}
+```
 
 ### Cargo.toml
 ```bash

@@ -8,3 +8,4 @@ license = "MIT"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
+dsu = {git = "https://github.com/mingendo/dsu.git", branch="main"}
