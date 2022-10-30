@@ -6,3 +6,4 @@ pub mod strongly_connected_components;
 pub mod dijkstra;
 pub mod kruskal;
 pub mod depths_vertices;
+pub mod lca;

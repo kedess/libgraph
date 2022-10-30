@@ -14,6 +14,7 @@ Library for working with graphs
 - [Dijkstra's algorithm (finding the shortest distance from one vertex to all the others)](#dijkstra)
 - [Construction of a minimal spanning tree (Kruskal's algorithm)](#kruskal)
 - [Search for the depth (distance) from a given vertex to all others](#depths_vertices)
+- [Finding the least common ancestor (LCA)](#lca)
 
 ```rust
 use libgraph::{GraphKind, Graph, version};
@@ -348,6 +349,33 @@ fn main(){
     assert_eq!(depths[3], Some(3));
     assert_eq!(depths[8], Some(4));
     assert_eq!(depths[11], Some(2));
+}
+```
+
+#### <a id="lca"/> Finding the least common ancestor (LCA)
+The algorithmic complexity of the construction is <b>O(V + E)</b>, where V is the number of vertices of the graph, and E is the number of edges. The algorithmic complexity of the response is O(log(V)). This algorithm is valid only for an acyclic undirected graph (tree)
+
+```rust
+use libgraph::{Graph, GraphKind, Lca};
+
+fn main(){
+    let mut graph = GraphKind::Undirected(Graph::new(9));
+    graph.add_edge(0, 1, 0).unwrap();
+    graph.add_edge(1, 2, 0).unwrap();
+    graph.add_edge(1, 3, 0).unwrap();
+    graph.add_edge(2, 4, 0).unwrap();
+    graph.add_edge(2, 5, 0).unwrap();
+    graph.add_edge(3, 6, 0).unwrap();
+    graph.add_edge(3, 7, 0).unwrap();
+    graph.add_edge(7, 8, 0).unwrap();
+
+    let lca = Lca::build(&graph, 0).unwrap();
+    
+    assert_eq!(2, lca.query(4, 5).unwrap());
+    assert_eq!(1, lca.query(4, 8).unwrap());
+    assert_eq!(2, lca.query(4, 2).unwrap());
+    assert_eq!(1, lca.query(2, 8).unwrap());
+    assert_eq!(3, lca.query(6, 8).unwrap());
 }
 ```
 
