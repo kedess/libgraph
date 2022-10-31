@@ -10,6 +10,7 @@ pub use algorithms::depths_vertices::depths_vertices;
 pub use algorithms::lca::Lca;
 pub use algorithms::floid::floid;
 pub use algorithms::finding_cycle::finding_cycle;
+pub use algorithms::bridges::find_bridges;
 
 pub mod error;
 use error::GraphError;

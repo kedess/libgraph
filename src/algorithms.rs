@@ -9,3 +9,4 @@ pub mod depths_vertices;
 pub mod lca;
 pub mod floid;
 pub mod finding_cycle;
+pub mod bridges;
