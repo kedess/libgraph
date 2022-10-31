@@ -18,6 +18,7 @@ Library for working with graphs
 - [Floid 's Algorithm](#floid)
 - [Search for cycles in a graph](#finding-cycle)
 - [Search for bridges in the graph](#finding-bridges)
+- [The Ford-Bellman algorithm](#bellman-ford)
 
 ```rust
 use libgraph::{GraphKind, Graph, version};
@@ -439,6 +440,27 @@ fn main(){
     graph.add_edge(5, 7, 0.0).unwrap();
     let bridges = find_bridges(&graph).unwrap();
     assert_eq!(bridges, vec![(5, 7), (3, 4)])
+}
+```
+
+#### <a id="bellman-ford"/> The Ford-Bellman algorithm
+The Bellman—Ford algorithm is an algorithm for finding the shortest path in a weighted graph. Unlike Dijkstra's algorithm, the Bellman—Ford algorithm admits edges with negative weight. Algorithmic complexity <b>O(V * E)</b>, where V is the number of vertices in the graph and E is the number of edges.
+
+```rust
+use libgraph::{bellman_ford, Graph, GraphKind, path_iter};
+
+fn main() {
+    let mut graph = GraphKind::Directed(Graph::new(8));
+
+    graph.add_edge(1, 2, 2.0).unwrap();
+    graph.add_edge(2, 3, 5.0).unwrap();
+    graph.add_edge(3, 5, 7.0).unwrap();
+    graph.add_edge(1, 5, 19.0).unwrap();
+    
+
+    let (parents, distances) = bellman_ford(&graph, 1).unwrap();
+    assert_eq!(path_iter(5, &parents).collect::<Vec<usize>>(), vec![5, 3, 2, 1]);
+    assert_eq!(distances[5].unwrap(), 14.0);
 }
 ```
 

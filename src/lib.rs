@@ -11,6 +11,7 @@ pub use algorithms::lca::Lca;
 pub use algorithms::floid::floid;
 pub use algorithms::finding_cycle::finding_cycle;
 pub use algorithms::bridges::find_bridges;
+pub use algorithms::bellman_ford::bellman_ford;
 
 pub mod error;
 use error::GraphError;
