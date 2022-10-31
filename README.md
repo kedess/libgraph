@@ -16,7 +16,7 @@ Library for working with graphs
 - [Search for the depth (distance) from a given vertex to all others](#depths_vertices)
 - [Finding the least common ancestor (LCA)](#lca)
 - [Floid 's Algorithm](#floid)
-- [Search for cycles in a graph](#finding-cyclei)
+- [Search for cycles in a graph](#finding-cycle)
 
 ```rust
 use libgraph::{GraphKind, Graph, version};
