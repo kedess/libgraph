@@ -16,6 +16,7 @@ Library for working with graphs
 - [Search for the depth (distance) from a given vertex to all others](#depths_vertices)
 - [Finding the least common ancestor (LCA)](#lca)
 - [Floid 's Algorithm](#floid)
+- [Search for cycles in a graph](#finding-cyclei)
 
 ```rust
 use libgraph::{GraphKind, Graph, version};
@@ -398,6 +399,27 @@ fn main(){
     let dist = floid(&graph).unwrap();
     assert_eq!(dist.get_dist(1, 2).unwrap(), 1);
     assert_eq!(dist.get_dist(1, 4).unwrap(), 2);
+}
+```
+
+#### <a id="finding-bridges"/> Search for cycles in a graph
+An algorithm for finding bridges in a graph. The algorithm is applicable to an undirected graph. The complexity of the algorithm is <b>O(V + E)</b>, where V is the number of vertices of the graph, and E is the number of edges. The algorithm does not work with parallel edges.
+
+```rust
+use libgraph::{Graph, GraphKind, find_bridges};
+
+fn main(){
+    let mut graph = GraphKind::Undirected(Graph::new(8));
+    graph.add_edge(1, 2, 0.0).unwrap();
+    graph.add_edge(2, 3, 0.0).unwrap();
+    graph.add_edge(1, 3, 0.0).unwrap();
+    graph.add_edge(3, 4, 0.0).unwrap();
+    graph.add_edge(4, 5, 0.0).unwrap();
+    graph.add_edge(4, 6, 0.0).unwrap();
+    graph.add_edge(5, 6, 0.0).unwrap();
+    graph.add_edge(5, 7, 0.0).unwrap();
+    let bridges = find_bridges(&graph).unwrap();
+    assert_eq!(bridges, vec![(5, 7), (3, 4)])
 }
 ```
 
