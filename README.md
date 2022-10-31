@@ -402,24 +402,21 @@ fn main(){
 }
 ```
 
-#### <a id="finding-bridges"/> Search for cycles in a graph
-An algorithm for finding bridges in a graph. The algorithm is applicable to an undirected graph. The complexity of the algorithm is <b>O(V + E)</b>, where V is the number of vertices of the graph, and E is the number of edges. The algorithm does not work with parallel edges.
+#### <a id="finding-cycle"/> Search for cycles in a graph
+An algorithm for searching for a cycle in a graph. The algorithm is applicable to graphs of both types.
+The complexity of the algorithm is <b>O(E)</b>, where E is the number of edges of the graph.
 
 ```rust
-use libgraph::{Graph, GraphKind, find_bridges};
+use libgraph::{GraphKind, Graph, finding_cycle};
 
 fn main(){
-    let mut graph = GraphKind::Undirected(Graph::new(8));
+    let mut graph = GraphKind::Undirected(Graph::new(10));
     graph.add_edge(1, 2, 0.0).unwrap();
     graph.add_edge(2, 3, 0.0).unwrap();
-    graph.add_edge(1, 3, 0.0).unwrap();
-    graph.add_edge(3, 4, 0.0).unwrap();
-    graph.add_edge(4, 5, 0.0).unwrap();
-    graph.add_edge(4, 6, 0.0).unwrap();
-    graph.add_edge(5, 6, 0.0).unwrap();
-    graph.add_edge(5, 7, 0.0).unwrap();
-    let bridges = find_bridges(&graph).unwrap();
-    assert_eq!(bridges, vec![(5, 7), (3, 4)])
+    assert_eq!(None, finding_cycle(&graph).unwrap());
+
+    graph.add_edge(3, 1, 0.0).unwrap();
+    assert_eq!(vec![3, 2, 1], finding_cycle(&graph).unwrap().unwrap());
 }
 ```
 
